@@ -23,66 +23,84 @@ function ContactForm({ refresh }) {
 
     try {
       await axios.post(API, form);
-      setStatus("Contact saved successfully");
+      setStatus("Contact added successfully 🎉");
       setForm({ name: "", email: "", phone: "", message: "" });
       refresh();
       setTimeout(() => setStatus(""), 3000);
     } catch {
-      setStatus("Something went wrong");
+      setStatus("Something went wrong ❌");
     }
   };
 
   return (
-    <div className="max-w-md mx-auto bg-white rounded-xl shadow p-5">
-      <h2 className="text-xl font-semibold text-gray-800 mb-4">
-        Contact Details
-      </h2>
+    <div className="relative max-w-lg mx-auto">
+      {/* Gradient background */}
+      <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-3xl blur opacity-20"></div>
 
-      {status && (
-        <p className="text-sm text-green-600 mb-3">{status}</p>
-      )}
+      <div className="relative bg-white/90 backdrop-blur rounded-3xl shadow-xl p-6 sm:p-8">
+        <h2 className="text-2xl font-bold text-slate-800">
+          Add New Contact
+        </h2>
+        <p className="text-sm text-slate-500 mb-6">
+          Save and manage your contacts easily
+        </p>
 
-      <form onSubmit={handleSubmit} className="space-y-3">
-        <input
-          className="w-full border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
-          placeholder="Full Name"
-          value={form.name}
-          onChange={(e) => setForm({ ...form, name: e.target.value })}
-        />
+        {status && (
+          <p className="text-sm mb-4 text-green-600">
+            {status}
+          </p>
+        )}
 
-        <input
-          className="w-full border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
-          placeholder="Email Address"
-          value={form.email}
-          onChange={(e) => setForm({ ...form, email: e.target.value })}
-        />
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <input
+            className="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+            placeholder="Full Name"
+            value={form.name}
+            onChange={(e) =>
+              setForm({ ...form, name: e.target.value })
+            }
+          />
 
-        <input
-          className="w-full border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
-          placeholder="Phone Number"
-          value={form.phone}
-          onChange={(e) => setForm({ ...form, phone: e.target.value })}
-        />
+          <input
+            className="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+            placeholder="Email Address"
+            value={form.email}
+            onChange={(e) =>
+              setForm({ ...form, email: e.target.value })
+            }
+          />
 
-        <textarea
-          className="w-full border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
-          rows="3"
-          placeholder="Message (optional)"
-          value={form.message}
-          onChange={(e) => setForm({ ...form, message: e.target.value })}
-        />
+          <input
+            className="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+            placeholder="Phone Number"
+            value={form.phone}
+            onChange={(e) =>
+              setForm({ ...form, phone: e.target.value })
+            }
+          />
 
-        <button
-          disabled={!isValid}
-          className={`w-full py-2 rounded-md text-white text-sm ${
-            isValid
-              ? "bg-blue-600 active:bg-blue-700"
-              : "bg-gray-400"
-          }`}
-        >
-          Save Contact
-        </button>
-      </form>
+          <textarea
+            rows="3"
+            className="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+            placeholder="Message (optional)"
+            value={form.message}
+            onChange={(e) =>
+              setForm({ ...form, message: e.target.value })
+            }
+          />
+
+          <button
+            disabled={!isValid}
+            className={`w-full py-3 rounded-xl font-medium text-white transition-all duration-200 ${
+              isValid
+                ? "bg-gradient-to-r from-blue-600 to-indigo-600 hover:scale-[1.02] active:scale-95"
+                : "bg-slate-400 cursor-not-allowed"
+            }`}
+          >
+            Save Contact
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

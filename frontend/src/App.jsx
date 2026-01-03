@@ -1,32 +1,26 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import ContactForm from "./Components/ContactForm";
 import ContactList from "./Components/ContactList";
 
+const API = "https://contact-management-app-backend-5rvl.onrender.com/api/contacts";
+
 function App() {
   const [contacts, setContacts] = useState([]);
 
-  const fetchContacts = async () => {
-    const res = await axios.get("https://contact-management-app-backend-5rvl.onrender.com/api/contacts");
+  const loadContacts = async () => {
+    const res = await axios.get(API);
     setContacts(res.data);
   };
 
   useEffect(() => {
-    fetchContacts();
+    loadContacts();
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-100 p-4">
-      <div className="max-w-5xl mx-auto">
-        <h1 className="text-2xl font-semibold text-center mb-6">
-          Contact Management App
-        </h1>
-
-        <div className="grid md:grid-cols-2 gap-6">
-          <ContactForm refresh={fetchContacts} />
-          <ContactList contacts={contacts} />
-        </div>
-      </div>
+    <div className="min-h-screen bg-slate-100 py-8 px-4">
+      <ContactForm refresh={loadContacts} />
+      <ContactList contacts={contacts} refresh={loadContacts} />
     </div>
   );
 }

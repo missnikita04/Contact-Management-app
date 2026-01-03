@@ -1,60 +1,39 @@
-import React, { useState } from "react";
 import axios from "axios";
 
-function ContactList({ contacts }) {
-  const [sorted, setSorted] = useState(false);
+const API = "https://contact-management-app-backend-5rvl.onrender.com/api/contacts";
 
-  const deleteContact = async (id) => {
-    await axios.delete(`http://localhost:5000/api/contacts/${id}`);
-    window.location.reload();
+function ContactList({ contacts, refresh }) {
+  const handleDelete = async (id) => {
+    if (!window.confirm("Delete this contact?")) return;
+    await axios.delete(`${API}/${id}`);
+    refresh();
   };
 
-  const displayContacts = sorted
-    ? [...contacts].sort((a, b) => a.name.localeCompare(b.name))
-    : contacts;
-
   return (
-    <div className="bg-white p-6 rounded-lg shadow overflow-x-auto">
-      <div className="flex justify-between items-center mb-4">
-        <h3 className="text-lg font-medium">Contact List</h3>
-        <button
-          onClick={() => setSorted(!sorted)}
-          className="text-sm bg-gray-200 px-3 py-1 rounded"
+    <div className="max-w-lg mx-auto mt-8 space-y-4">
+      {contacts.map((c) => (
+        <div
+          key={c._id}
+          className="bg-white rounded-2xl shadow-lg p-4 flex justify-between items-center hover:shadow-xl transition"
         >
-          Sort by Name
-        </button>
-      </div>
+          <div>
+            <p className="font-semibold text-slate-800">
+              {c.name}
+            </p>
+            <p className="text-sm text-slate-500">
+              {c.phone}
+            </p>
+          </div>
 
-      <table className="w-full text-sm border">
-        <thead className="bg-gray-100">
-          <tr>
-            <th className="p-2 border">Name</th>
-            <th className="p-2 border">Email</th>
-            <th className="p-2 border">Phone</th>
-            <th className="p-2 border">Message</th>
-            <th className="p-2 border">Action</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {displayContacts.map(c => (
-            <tr key={c._id} className="text-center">
-              <td className="p-2 border">{c.name}</td>
-              <td className="p-2 border">{c.email}</td>
-              <td className="p-2 border">{c.phone}</td>
-              <td className="p-2 border">{c.message}</td>
-              <td className="p-2 border">
-                <button
-                  onClick={() => deleteContact(c._id)}
-                  className="text-red-600 hover:underline"
-                >
-                  Delete
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+          <button
+            type="button"
+            onClick={() => handleDelete(c._id)}
+            className="px-4 py-2 text-xs font-medium text-white bg-red-500 rounded-xl hover:bg-red-600 active:scale-95 transition"
+          >
+            Delete
+          </button>
+        </div>
+      ))}
     </div>
   );
 }
