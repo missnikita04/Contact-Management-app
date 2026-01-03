@@ -12,13 +12,18 @@ function ContactForm({ refresh }) {
   const [success, setSuccess] = useState("");
 
   const isValid =
-    form.name &&
+    form.name.trim() &&
     form.email.includes("@") &&
-    form.phone.length >= 10;
+    form.phone.replace(/\D/g, "").length >= 10;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await axios.post("http://localhost:5000/api/contacts", form);
+
+    await axios.post(
+      "https://contact-management-app-backend-5rvl.onrender.com/api/contacts",
+      form
+    );
+
     setForm({ name: "", email: "", phone: "", message: "" });
     setSuccess("Contact added successfully");
     refresh();
@@ -33,26 +38,34 @@ function ContactForm({ refresh }) {
         <p className="text-green-600 mb-3">{success}</p>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-3">
+      <form onSubmit={handleSubmit} className="space-y-3 pb-20">
         <input
           className="w-full border p-2 rounded"
           placeholder="Name"
           value={form.name}
-          onChange={e => setForm({ ...form, name: e.target.value })}
+          onChange={e =>
+            setForm({ ...form, name: e.target.value })
+          }
         />
 
         <input
           className="w-full border p-2 rounded"
           placeholder="Email"
           value={form.email}
-          onChange={e => setForm({ ...form, email: e.target.value })}
+          onChange={e =>
+            setForm({ ...form, email: e.target.value })
+          }
         />
 
         <input
+          type="tel"
+          inputMode="numeric"
           className="w-full border p-2 rounded"
           placeholder="Phone"
           value={form.phone}
-          onChange={e => setForm({ ...form, phone: e.target.value })}
+          onChange={e =>
+            setForm({ ...form, phone: e.target.value })
+          }
         />
 
         <textarea
@@ -60,13 +73,18 @@ function ContactForm({ refresh }) {
           placeholder="Message (optional)"
           rows="3"
           value={form.message}
-          onChange={e => setForm({ ...form, message: e.target.value })}
+          onChange={e =>
+            setForm({ ...form, message: e.target.value })
+          }
         />
 
         <button
+          type="submit"
           disabled={!isValid}
           className={`w-full py-2 rounded text-white ${
-            isValid ? "bg-blue-600 hover:bg-blue-700" : "bg-gray-400"
+            isValid
+              ? "bg-blue-600 hover:bg-blue-700"
+              : "bg-gray-400"
           }`}
         >
           Submit
