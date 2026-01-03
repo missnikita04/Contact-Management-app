@@ -23,6 +23,17 @@ function ContactList({ contacts, refresh }) {
             <p className="text-sm text-slate-500">
               {c.phone}
             </p>
+           {c.message && (
+  <details className="mt-2">
+    <summary className="text-xs text-blue-600 cursor-pointer">
+      View message
+    </summary>
+    <p className="text-sm text-slate-600 mt-1">
+      {c.message}
+    </p>
+  </details>
+)}
+
           </div>
 
           <button
