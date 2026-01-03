@@ -7,7 +7,7 @@ function App() {
   const [contacts, setContacts] = useState([]);
 
   const fetchContacts = async () => {
-    const res = await axios.get("http://localhost:5000/api/contacts");
+    const res = await axios.get("https://contact-management-app-backend-5rvl.onrender.com/api/contacts");
     setContacts(res.data);
   };
 
